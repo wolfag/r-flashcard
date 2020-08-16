@@ -1,0 +1,40 @@
+{
+  "cards": [
+    {
+      "id": 1,
+      "eng": "to be",
+      "vn": "thi la",
+      "pin": "this la"
+    },
+    {
+      "id": 2,
+      "eng": "not",
+      "vn": "khong",
+      "pin": "kong"
+    },
+    {
+      "id": 3,
+      "eng": "person",
+      "vn": "nguoi",
+      "pin": "nguoi"
+    },
+    {
+      "id": 4,
+      "eng": "we",
+      "vn": "chung toi",
+      "pin": "chung toi"
+    },
+    {
+      "id": 5,
+      "eng": "love",
+      "vn": "yeu",
+      "pin": "yeu"
+    },
+    {
+      "id": 6,
+      "eng": "hate",
+      "vn": "ghet",
+      "pin": "ghet"
+    }
+  ]
+}
