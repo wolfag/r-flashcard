@@ -4,24 +4,26 @@ import './App.css';
 import Card from './Card/Card';
 import DrawButton from './DrawButton/DrawButton';
 import firebase from './Config/Firebase/db_config';
+import CardList from './CardList';
+import AddCard from './AddCard';
 
-// firebase.firestore().collection('cards').add({
-//   eng: 'love',
-//   vn: 'yeu',
-//   pin: 'yeu',
-// });
+const SORT_OPTIONS = {
+  ASC: { column: 'eng', direction: 'asc' },
+  DESC: { column: 'eng', direction: 'desc' },
+};
 
 const getRandomCard = (currentCards) => {
   const card = currentCards[Math.floor(Math.random() * currentCards.length)];
   return card;
 };
 
-function useCards() {
+function useCards(sortBy = 'DESC') {
   const [cards, setCards] = useState([]);
   useEffect(() => {
     firebase
       .firestore()
       .collection('cards')
+      .orderBy(SORT_OPTIONS[sortBy].column, SORT_OPTIONS[sortBy].direction)
       .onSnapshot((snapshot) => {
         const newCards = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -29,14 +31,17 @@ function useCards() {
         }));
         setCards(newCards);
       });
-  }, []);
+  }, [sortBy]);
 
   return cards;
 }
 
 function App() {
   const [currentCard, setCurrentCard] = useState({});
-  const cards = useCards();
+  const [sortBy, setSortBy] = useState('DESC');
+  const cards = useCards(sortBy);
+
+  console.log({ cards });
 
   useEffect(() => {
     setCurrentCard(getRandomCard(cards));
@@ -48,6 +53,14 @@ function App() {
 
   return (
     <div className='App'>
+      <div>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.currentTarget.value)}>
+          <option value='DESC'>DESC</option>
+          <option value='ASC'>ASC</option>
+        </select>
+      </div>
       <div className='cardRow'>
         <Card
           eng={currentCard?.eng}
@@ -57,6 +70,12 @@ function App() {
       </div>
       <div className='buttonRow'>
         <DrawButton onDrawCard={_updateCard} />
+      </div>
+      <div>
+        <AddCard />
+      </div>
+      <div className='cardList'>
+        <CardList data={cards} />
       </div>
     </div>
   );
